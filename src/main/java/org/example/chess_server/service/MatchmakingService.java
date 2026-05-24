@@ -25,6 +25,7 @@ public class MatchmakingService {
 
         Player opponent = waitingPlayers.poll();
         GameSession session = new GameSession(opponent, player);
+
         activeGames.put(session.getGameId(), session);
 
         return session;
@@ -32,6 +33,24 @@ public class MatchmakingService {
 
     public GameSession getGame(String gameId) {
         return activeGames.get(gameId);
+    }
+
+    public GameSession getGameByPlayerId(String playerId) {
+
+        for (GameSession session : activeGames.values()) {
+
+            boolean isPlayer1 =
+                    session.getPlayer1().getId().equals(playerId);
+
+            boolean isPlayer2 =
+                    session.getPlayer2().getId().equals(playerId);
+
+            if (isPlayer1 || isPlayer2) {
+                return session;
+            }
+        }
+
+        return null;
     }
 
     public String addMoveToGame(String gameId,

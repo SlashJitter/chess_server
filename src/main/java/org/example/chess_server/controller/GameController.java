@@ -50,6 +50,7 @@ public class GameController {
 
     @PostMapping("/join")
     public String joinGame(@RequestBody Player player) {
+
         GameSession session = matchmakingService.joinGame(player);
 
         if (session == null) {
@@ -64,6 +65,11 @@ public class GameController {
         return "Game started! ID: " + session.getGameId();
     }
 
+    @GetMapping("/player/{playerId}")
+    public GameSession getGameByPlayer(@PathVariable String playerId) {
+        return matchmakingService.getGameByPlayerId(playerId);
+    }
+
     @GetMapping("/{gameId}")
     public GameSession getGame(@PathVariable String gameId) {
         return matchmakingService.getGame(gameId);
@@ -74,6 +80,7 @@ public class GameController {
                            @RequestBody MoveDTO moveDTO) {
 
         Move move = new Move();
+
         move.setFromRow(moveDTO.fromRow);
         move.setFromCol(moveDTO.fromCol);
         move.setToRow(moveDTO.toRow);
